@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+		<!-- 加载顺序：content-param -> listener -> filter -> servlet -->
+
+  
+
+		<!-- 配置spring -->
+		<context-param>  
+			<param-name>contextConfigLocation</param-name>  
+			<param-value>
+				classpath:spring.xml
+			</param-value>  
+		</context-param>  
+		
+		<!-- 配置log4j -->
+		<context-param>
+			<param-name>log4jConfigLocation</param-name>
+			<param-value>classpath:log4j.properties</param-value>
+		</context-param>
+		
+
+		<!-- 配置spring的listener，加载其核心组建 -->
+		<listener>
+			<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		</listener>
+		
+		<!-- 系统初始化 -->
+		<!-- <listener>
+			<listener-class>com.king.tooth.listener.LoadPropertiesFileListener</listener-class>
+		</listener>  -->
+
+  
+
+		<!-- 配置记录方法执行时间过滤器，用作性能监控的过滤器 -->
+		<!-- <filter>
+			<filter-name>funcExecTimeFilter</filter-name>
+			<filter-class>com.king.tooth.filter.FuncExecTimeFilter</filter-class>
+		</filter>
+		Res api方法监控
+		<filter-mapping>
+			<filter-name>funcExecTimeFilter</filter-name>
+			<url-pattern>/Res/*</url-pattern>
+		</filter-mapping> -->
+
+		<!-- 配置spring的编码过滤器 -->
+		<filter>
+			<filter-name>encodingFilter</filter-name>
+			<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+			<init-param>
+				<param-name>encoding</param-name>
+				<param-value>utf-8</param-value>
+			</init-param>
+			<init-param>  
+		        <param-name>forceEncoding</param-name>  
+		        <param-value>true</param-value>  
+		    </init-param>  
+		</filter>
+		<filter-mapping>
+			<filter-name>encodingFilter</filter-name>
+			<url-pattern>/*</url-pattern>
+		</filter-mapping>
+		
+		
+<!-- ****************************************************************************************************  -->		
+		<!-- 名为Res的servlet -->
+		<servlet>
+			<servlet-name>resServlet</servlet-name>
+			<servlet-class>com.king.tooth.web.servlet.ResServlet</servlet-class>
+		</servlet>
+		<servlet-mapping>
+			<servlet-name>resServlet</servlet-name>
+			<url-pattern>/Res/*</url-pattern>
+		</servlet-mapping>
+		<!-- 测试名为Res的servlet -->
+		<servlet>
+			<servlet-name>NodeNo2</servlet-name>
+			<servlet-class>com.king.tooth.apitet.res.controller.SubNodeControllerServlet</servlet-class>
+		</servlet> 
+		 <servlet-mapping>
+			<servlet-name>NodeNo2</servlet-name>
+			<url-pattern>/resservlettest</url-pattern>
+		</servlet-mapping> 
+<!-- ****************************************************************************************************  -->		
+		
+		
+		
+
+		<!-- 配置session的时效【30分钟】  -->
+		<session-config>
+			<session-timeout>30</session-timeout>
+		</session-config>
+		
+		
+		<!-- 配置默认首页 -->
+		<welcome-file-list>
+			<welcome-file>/app/tooth/apitest/res/ApiTest.jsp</welcome-file>
+		</welcome-file-list>
+</web-app>

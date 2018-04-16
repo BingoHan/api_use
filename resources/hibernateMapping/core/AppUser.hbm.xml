@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class entity-name="AppUser" table="APP_USER">
+		<id name="Id" column="id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="Name" column="name" type="java.lang.String" />
+		<property name="Code" column="code" type="java.lang.String" />
+		<property name="Gender" column="gender" type="java.lang.Integer" />
+		<property name="LoginLimitKind" column="login_Limit_Kind" type="java.lang.Integer" />
+		<property name="Status" column="status" type="java.lang.Integer" />
+	</class>
+</hibernate-mapping>

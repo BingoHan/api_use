@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+						">
+	
+	<!-- 阿里 druid数据库连接池 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">  
+         <property name="url" value="${jdbc.url}" />  
+         <property name="username" value="${jdbc.username}" />  
+         <property name="password" value="${jdbc.password}" />  
+         <property name="driverClassName" value="${jdbc.driverClassName}" />  
+	</bean>  
+	
+	<!-- 装配hibernate的配置 -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" scope="singleton">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+			</props>
+		</property>
+		<property name="mappingLocations" >
+			<value>classpath:hibernateMapping/**/*.hbm.xml</value>
+		</property>
+	</bean>
+	
+	<!-- 事务配置 -->
+<!--  	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean> -->
+	
+	<!-- 基本事务定义,使用transactionManager作事务管理 -->
+<!--  	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="doPostProcess" propagation="REQUIRED" />	
+			<tx:method name="doDeleteProcess" propagation="REQUIRED" />	
+			<tx:method name="doPutProcess" propagation="REQUIRED" />
+			
+			<tx:method name="doGetProcess" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice> -->
+	<!-- 以AspectJ方式 定义 AOP 用于事务拦截 -->
+ <!-- 	<aop:config proxy-target-class="true">
+		<aop:pointcut id="pc" expression="execution(* com.king.tooth.web.processer..*.*(..))" />
+		<aop:advisor pointcut-ref="pc" advice-ref="txAdvice" />
+	</aop:config> -->
+	
+</beans>
